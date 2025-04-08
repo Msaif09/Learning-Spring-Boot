@@ -7,28 +7,52 @@ package com.learn.test.first.controllers;
 
 
 import com.learn.test.first.dto.EmployeeDTO;
-import jakarta.websocket.server.PathParam;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import com.learn.test.first.services.EmployeeService;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
+@RequestMapping(path = "employees")
 public class EmployeeController {
 
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     //mandatory to pass id
-    @GetMapping(path = "/employees/{id}")
-    public EmployeeDTO getEmployee(@PathVariable("id") Long id){
-        return new EmployeeDTO(id,"Mohammad Saif", LocalDate.now(),true);
+    @GetMapping(path = "/{id}")
+    public EmployeeDTO getEmployeeById(@PathVariable("id") Long id){
+        return employeeService.getEmployeeById(id);
     }
 
 
     //optional to pass sortBy
     //you can pass multiple params
-    @GetMapping(path = "/employee")
-    public String getData(@PathParam("sortBy") String sortBy ,
-                          @PathParam("limit") Integer limit){
-        return "Hello " + sortBy + " " + limit;
+//    @GetMapping
+//    public String getData(@PathParam("sortBy") String sortBy ,
+//                          @PathParam("limit") Integer limit){
+//        return "Hello " + sortBy + " " + limit;
+//    }
+
+    @PostMapping
+    public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO employeeDTO){
+        return employeeService.addEmployee(employeeDTO);
     }
+
+    @GetMapping
+    public List<EmployeeDTO> getAllEmployees(){
+        return employeeService.getAllEmployees();
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public boolean deleteEmployeeById(@PathVariable("id") Long id){
+        return employeeService.deleteEmployeeById(id);
+    }
+
+    
+
 }

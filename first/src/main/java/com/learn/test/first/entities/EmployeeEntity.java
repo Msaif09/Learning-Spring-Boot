@@ -1,22 +1,27 @@
-package com.learn.test.first.dto;
+package com.learn.test.first.entities;
+
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-
-public class EmployeeDTO {
+@Entity
+@Table(name = "employee")
+public class EmployeeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private LocalDate dateOfJoining;
     private boolean active;
 
-    public EmployeeDTO(Long id, String name, LocalDate dateOfJoining, boolean active) {
+    public EmployeeEntity(Long id, String name, LocalDate dateOfJoining, boolean active) {
         this.id = id;
         this.name = name;
         this.dateOfJoining = dateOfJoining;
         this.active = active;
     }
+    public EmployeeEntity(){
 
-    public EmployeeDTO() {
     }
 
     public Long getId() {
